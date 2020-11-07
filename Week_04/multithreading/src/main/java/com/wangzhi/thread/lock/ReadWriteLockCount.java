@@ -27,7 +27,7 @@ public class ReadWriteLockCount {
     public int getSum() {
         try {
             lock.readLock().lock();
-            // 我电脑6核，这里默认同时可以有12个线程同时持有读锁，之后的线程就需要排队等待了，默认是2倍CPU核数的线程并行
+            // 我电脑6核，这里默认同时可以有12个线程同时持有读锁，之后的线程就需要排队等待了，默认是2倍CPU核数的线程并行，但是这个是java 8parallel的功劳
             Thread.sleep(5000);
             return sum;
         } catch (InterruptedException e) {
@@ -45,5 +45,11 @@ public class ReadWriteLockCount {
         // 很明显，这里没有产生死锁
         IntStream.range(0, loop_sum).parallel().forEach(i -> readWriteLockCount.incrAndGet());
         IntStream.range(0, loop_sum).parallel().forEach(i -> System.out.println(readWriteLockCount.getSum()));
+        /// 下面的代码 OOM
+//        for (int i = 0; i < loop_sum; i++) {
+//            new Thread(() -> {
+//                System.out.println(readWriteLockCount.getSum());
+//            }).start();
+//        }
     }
 }
