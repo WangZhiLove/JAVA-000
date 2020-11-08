@@ -34,7 +34,6 @@ public class SemaphoreDemo2 {
 
             });
         }
-
         // 这里如果不关闭，主线成可能永远不会结束或者等待的时间很久
         service.shutdown();
     }
