@@ -16,11 +16,12 @@ public class FutureTaskDemo {
         }
 
         // 方式2
-        ExecutorService cachedThreadPool = Executors.newCachedThreadPool();
-        Future<Integer> submit = cachedThreadPool.submit(() -> new Random().nextInt());
-        cachedThreadPool.shutdown();
+        ExecutorService executor = Executors.newSingleThreadExecutor();
+        FutureTask<Integer> task = new FutureTask<>(() -> new Random().nextInt());
+        executor.submit(task);
+        executor.shutdown();
         try {
-            System.out.println(submit.get());
+            System.out.println(task.get());
         } catch (InterruptedException e) {
             e.printStackTrace();
         } catch (ExecutionException e) {
